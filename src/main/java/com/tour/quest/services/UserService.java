@@ -20,7 +20,7 @@ public class UserService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private MailSender mailSender;
+    private NotificationService mailSender;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -46,6 +46,18 @@ public class UserService implements UserDetailsService {
             );
             mailSender.send(user.getEmail(), "Activation code", message);
         }
+        return true;
+    }
+
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+        if (user ==  null){
+            return false;
+        } else {
+            user.setActivationCode(null);
+            userRepository.save(user);
+        }
+
         return true;
     }
 }
