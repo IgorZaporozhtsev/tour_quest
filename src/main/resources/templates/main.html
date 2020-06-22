@@ -28,14 +28,21 @@
        aria-controls="collapseExample">
         Add new message
     </a>
-    <div class="collapse" id="collapseExample">
+    <!--<div th:class="${message.text} ? 'collapse show' : 'collapse' " id="collapseExample">-->
+    <div class="collapse show" id="collapseExample">
         <div class="form-group mt-3">
-            <form th:action="@{/main}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/main}" method="post" enctype="multipart/form-data" th:object="${message}" >
                 <div class="form-group">
                     <input type="text" name="tag" placeholder="tag" class="form-control">
                 </div>
                 <div class="form-group">
-                    <input type="text" name="text" placeholder="please add message" class="form-control">
+                    <input type="text" name="text" placeholder="please add message"
+                           th:class="${message.text} ? 'form-control is-invalid' : 'form-control ' "
+                           th:field="*{text}"
+                           id="myrequired"
+                    >
+                     <span class="invalid-feedback" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
+                    <!-- <span th:text="${textError}"></span>-->
                 </div>
                 <div class="form-group">
                     <div class="custom-file">

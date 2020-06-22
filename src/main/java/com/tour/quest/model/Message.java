@@ -1,8 +1,10 @@
 package com.tour.quest.model;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
@@ -10,6 +12,8 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
+    @Length(max = 2048, message = "Message to long")
+    @NotBlank(message = "Please fill the message")
     private String text;
     private String tag;
     private String filename;
